@@ -1,3 +1,4 @@
+import { Recipe } from '@/types';
 import {
     Card,
     CardActionArea,
@@ -7,20 +8,25 @@ import {
 } from '@mui/material';
 import TextTruncate from 'react-text-truncate';
 
-export default function RecipeCard() {
-    const description = `Decadent dark chocolate cheesecake topped with cherries and whipped cream.`;
+interface RecipeCardProps {
+    recipe: Recipe;
+}
+
+export default function RecipeCard(props: RecipeCardProps) {
+    const { recipe } = props;
+    const { name, description, photo_url } = recipe;
 
     return (
         <Card sx={{ height: 410 }}>
             <CardActionArea>
                 <CardMedia
-                    image="https://i.imgur.com/5VpZZN1.jpg"
-                    title="cake"
+                    image={photo_url}
+                    title={name}
                     sx={{ height: 300 }}
                 />
                 <CardContent>
                     <Typography variant="h6" gutterBottom>
-                        Black Forest Cheesecake
+                        {name}
                     </Typography>
                     <Typography
                         variant="body2"
