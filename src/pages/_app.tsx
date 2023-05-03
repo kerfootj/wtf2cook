@@ -1,9 +1,6 @@
 import NavBar from '@/components/NavBar';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import type { AppProps } from 'next/app';
-import { Inter } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'] });
 
 const theme = createTheme({
     palette: {
@@ -11,6 +8,10 @@ const theme = createTheme({
     },
     typography: {
         fontFamily: ['Inter', 'Arial', 'sans-serif'].join(),
+        body1: {
+            fontFamily: ['Bitter', 'serif'].join(),
+            fontSize: '1.1rem',
+        },
     },
     components: {
         MuiCssBaseline: {
@@ -36,11 +37,6 @@ const theme = createTheme({
 export default function App({ Component, pageProps }: AppProps) {
     return (
         <ThemeProvider theme={theme}>
-            <style jsx global>{`
-                html {
-                    font-family: ${inter.style.fontFamily};
-                }
-            `}</style>
             <CssBaseline />
             <NavBar />
             <Component {...pageProps} />

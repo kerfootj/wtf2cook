@@ -4,6 +4,8 @@ if (!process.env.MONGODB_URI) {
     throw new Error('Invalid environment variable: "MONGODB_URI"');
 }
 
+export const MONGO_DB = process.env.MONGODB_DB || 'dev';
+
 const uri = process.env.MONGODB_URI;
 const options = {};
 
