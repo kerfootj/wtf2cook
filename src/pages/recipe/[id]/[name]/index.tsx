@@ -1,5 +1,6 @@
 import Page from '@/components/Page';
 import { Recipe as RecipeDetails } from '@/components/Recipe';
+import { api } from '@/lib/api';
 import { Recipe } from '@/types';
 import { Box } from '@mui/material';
 import axios from 'axios';
@@ -28,9 +29,7 @@ export async function getServerSideProps(
 
     const { id } = context.params;
 
-    const { data } = await axios<Recipe>(
-        `http://localhost:3000/api/recipes/${id}`,
-    );
+    const { data } = await axios<Recipe>(api(`recipes/${id}`));
 
     return {
         props: {

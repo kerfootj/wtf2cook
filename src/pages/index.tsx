@@ -1,5 +1,6 @@
 import Page from '@/components/Page';
 import RecipeCard from '@/components/RecipeCard';
+import { api } from '@/lib/api';
 import { Recipe } from '@/types';
 import { Grid } from '@mui/material';
 import axios from 'axios';
@@ -9,7 +10,7 @@ type HomeProps = {
 };
 
 export async function getServerSideProps() {
-    const { data } = await axios<Recipe[]>('http://localhost:3000/api/recipes');
+    const { data } = await axios<Recipe[]>(api('recipes'));
 
     return { props: { recipes: data } };
 }
