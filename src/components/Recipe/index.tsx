@@ -60,7 +60,9 @@ export function Recipe(props: RecipeProps) {
                 }}
             />
 
-            <Box display="flex" flexDirection="column" gap={3} mt={3}>
+            <Box
+                sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 3 }}
+            >
                 <Ingredients recipe={recipe} />
 
                 <Instructions recipe={recipe} />

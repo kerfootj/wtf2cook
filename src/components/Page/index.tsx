@@ -1,14 +1,18 @@
 import Head from 'next/head';
 import { PropsWithChildren } from 'react';
+import NavBar from '../NavBar';
 
 export type PageProps = PropsWithChildren<{
     title?: string;
     description?: string;
     image?: string;
+    navbar?: {
+        hidden?: boolean;
+    };
 }>;
 
 const DEFAULT_TITLE = 'WTF 2 Cook';
-const DEFAULT_DESCRIPTION = 'Visit wtf2cook.ca for the best no bs recipes';
+const DEFAULT_DESCRIPTION = 'Visit wtf2cook.ca for the best no bs recipes.';
 const DEFAULT_IMAGE = '/images/burger.jpg';
 
 /**
@@ -17,7 +21,7 @@ const DEFAULT_IMAGE = '/images/burger.jpg';
  * - wraps the children in a main tag
  */
 export default function Page(props: PageProps) {
-    const { title, description, image, children } = props;
+    const { title, description, image, navbar, children } = props;
 
     return (
         <>
@@ -49,7 +53,8 @@ export default function Page(props: PageProps) {
 
                 <meta property="og:type" content="website" />
             </Head>
-            <main>{children}</main>
+            {navbar?.hidden ? null : <NavBar />}
+            <main style={{ height: '100%' }}>{children}</main>
         </>
     );
 }

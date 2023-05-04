@@ -1,12 +1,15 @@
-import { AppBar, Box, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function NavBar() {
+    const { data } = useSession();
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="fixed">
-                <Toolbar>
+                <Toolbar sx={{ display: 'flex' }}>
                     <Link
                         href="/"
                         passHref
@@ -38,6 +41,21 @@ export default function NavBar() {
                             </Typography>
                         </Box>
                     </Link>
+                    <Box sx={{ flexGrow: 1 }} />
+                    {data ? (
+                        <Button onClick={() => signOut()}> Sign out</Button>
+                    ) : (
+                        <Link
+                            href="/login"
+                            passHref
+                            style={{
+                                textDecoration: 'none',
+                                color: 'inherit',
+                            }}
+                        >
+                            <Button>Sign in</Button>
+                        </Link>
+                    )}
                 </Toolbar>
             </AppBar>
             <Box sx={{ height: 64 }}></Box>
