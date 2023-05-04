@@ -1,13 +1,17 @@
+import {
+    FacebookButton,
+    GoogleButton,
+    RedditButton,
+} from '@/components/AuthButtons.tsx';
 import { Logo } from '@/components/Logo';
 import Page from '@/components/Page';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FacebookButton, GoogleButton, RedditButton } from './login.styles';
 
 export default function Login() {
-    const { data, status } = useSession();
+    const { data } = useSession();
     const { push } = useRouter();
     const theme = useTheme();
 
