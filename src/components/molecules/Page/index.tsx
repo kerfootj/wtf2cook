@@ -1,6 +1,6 @@
+import NavBar from '@/components/organisms/NavBar';
 import Head from 'next/head';
 import { PropsWithChildren } from 'react';
-import NavBar from '../NavBar';
 
 export type PageProps = PropsWithChildren<{
     title?: string;

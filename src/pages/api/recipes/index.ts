@@ -16,7 +16,7 @@ export default async function handler(
     const recipes = await db
         .collection<Recipe>('recipes')
         .find({})
-        .limit(20)
+        .limit(40)
         .toArray();
 
     res.json(recipes);

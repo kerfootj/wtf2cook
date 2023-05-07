@@ -1,5 +1,5 @@
-import Page from '@/components/Page';
-import { Recipe as RecipeDetails } from '@/components/Recipe';
+import Page from '@/components/molecules/Page';
+import { Recipe as RecipeDetails } from '@/components/organisms/Recipe';
 import { api } from '@/lib/api';
 import { Recipe } from '@/types';
 import { Box } from '@mui/material';

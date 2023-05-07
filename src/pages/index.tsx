@@ -1,5 +1,5 @@
-import Page from '@/components/Page';
-import RecipeCard from '@/components/RecipeCard';
+import Page from '@/components/molecules/Page';
+import RecipeCard from '@/components/organisms/RecipeCard';
 import { api } from '@/lib/api';
 import { Recipe } from '@/types';
 import { Grid } from '@mui/material';
