@@ -1,3 +1,4 @@
+import { SearchContextProvider } from '@/components/context/SearchContext';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
@@ -38,8 +39,10 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
         <SessionProvider session={pageProps.session}>
             <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <Component {...pageProps} />
+                <SearchContextProvider>
+                    <CssBaseline />
+                    <Component {...pageProps} />
+                </SearchContextProvider>
             </ThemeProvider>
         </SessionProvider>
     );

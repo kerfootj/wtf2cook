@@ -28,7 +28,7 @@ export default function Login() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    mt: { xs: '10%', md: '20%' },
+                    height: '75vh',
                 }}
             >
                 <Link href="/" passHref>

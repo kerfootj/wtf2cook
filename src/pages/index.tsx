@@ -1,22 +1,34 @@
+import { useSearch } from '@/components/context/SearchContext';
 import Page from '@/components/molecules/Page';
 import RecipeCard from '@/components/organisms/RecipeCard';
 import { api } from '@/lib/api';
 import { Recipe } from '@/types';
 import { Grid } from '@mui/material';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-type HomeProps = {
-    recipes: Recipe[];
-};
+export default function Home() {
+    const [loading, setLoading] = useState(true);
+    const [recipes, setRecipes] = useState<Recipe[]>([]);
 
-export async function getServerSideProps() {
-    const { data } = await axios<Recipe[]>(api('recipes'));
+    const { search } = useSearch();
 
-    return { props: { recipes: data } };
-}
+    useEffect(() => {
+        axios
+            .get<Recipe[]>(api('recipes', { search }))
+            .then((res) => {
+                setRecipes(res.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            });
+    }, [search]);
 
-export default function Home(props: HomeProps) {
-    const { recipes } = props;
+    if (loading) {
+        return <Page>Loading...</Page>;
+    }
 
     return (
         <Page>
