@@ -1,5 +1,4 @@
-import { SearchBar } from '@/components/molecules/SearchBar';
-import { UserMenu } from '@/components/molecules/UserMenu';
+import { SearchBar, UserMenu } from '@/components/molecules';
 import {
     AppBar,
     Avatar,
@@ -15,7 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
-export default function NavBar() {
+export function NavBar() {
     return (
         <Box sx={{ flex: '1' }}>
             <AppBar position="fixed">

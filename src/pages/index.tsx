@@ -1,6 +1,6 @@
-import { useSearch } from '@/components/context/SearchContext';
-import Page from '@/components/molecules/Page';
-import RecipeCard from '@/components/organisms/RecipeCard';
+import { useSearch } from '@/components/context';
+import { Page } from '@/components/molecules';
+import { RecipeCard } from '@/components/organisms';
 import { api } from '@/lib/api';
 import { Recipe } from '@/types';
 import { Grid } from '@mui/material';

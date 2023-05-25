@@ -13,7 +13,7 @@ interface RecipeCardProps {
     recipe: Recipe;
 }
 
-export default function RecipeCard(props: RecipeCardProps) {
+export function RecipeCard(props: RecipeCardProps) {
     const { recipe } = props;
     const { id, name, description, photo_url } = recipe;
 

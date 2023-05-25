@@ -1,10 +1,10 @@
 import {
     FacebookButton,
     GoogleButton,
+    Logo,
     RedditButton,
-} from '@/components/atoms/AuthButtons';
-import { Logo } from '@/components/atoms/Logo';
-import Page from '@/components/molecules/Page';
+} from '@/components/atoms';
+import { Page } from '@/components/molecules';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';

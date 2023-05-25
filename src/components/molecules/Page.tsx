@@ -1,4 +1,4 @@
-import NavBar from '@/components/organisms/NavBar';
+import { NavBar } from '@/components/organisms';
 import Head from 'next/head';
 import { PropsWithChildren } from 'react';
 
@@ -20,7 +20,7 @@ const DEFAULT_IMAGE = '/images/burger.jpg';
  * - sets the page metadata
  * - wraps the children in a main tag
  */
-export default function Page(props: PageProps) {
+export function Page(props: PageProps) {
     const { title, description, image, navbar, children } = props;
 
     return (

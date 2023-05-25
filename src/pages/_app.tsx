@@ -1,4 +1,4 @@
-import { SearchContextProvider } from '@/components/context/SearchContext';
+import { SearchContextProvider } from '@/components/context';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
