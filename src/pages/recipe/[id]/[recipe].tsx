@@ -1,53 +1,89 @@
 import { Page } from '@/components/molecules';
 import { Recipe as RecipeDetails } from '@/components/organisms';
-import { api } from '@/lib/api';
+import clientPromise, { MONGO_DB } from '@/lib/mongodb';
 import { Recipe } from '@/types';
 import { Box } from '@mui/material';
-import axios from 'axios';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import {
+    GetStaticPathsResult,
+    GetStaticPropsContext,
+    GetStaticPropsResult,
+} from 'next';
+import { useRouter } from 'next/router';
 
-type RecipePageParams = {
-    id: string;
-};
+type RecipePageParams = Pick<Recipe, 'id' | 'name'>;
 
 type RecipePageProps = {
     recipe: Recipe;
 };
 
-export async function getServerSideProps(
-    context: GetServerSidePropsContext<RecipePageParams>,
-): Promise<GetServerSidePropsResult<RecipePageProps>> {
-    // handle invalid or missing id in url
-    if (!context.params) {
-        return {
-            redirect: {
-                destination: '/',
-                permanent: false,
-            },
-        };
+/**
+ * Get a list of recipes from the database to generate static pages for.
+ */
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+    const client = await clientPromise;
+    const db = client.db(MONGO_DB);
+
+    const recipes = await db
+        .collection<RecipePageParams>('recipes')
+        .find()
+        .project({ id: 1, name: 1 })
+        .toArray();
+
+    const paths = recipes.map((recipe) => ({
+        params: {
+            id: recipe.id,
+            recipe: recipe.name.toLowerCase().replace(/ +/g, '-'),
+        },
+    }));
+
+    return {
+        paths,
+        fallback: true,
+    };
+}
+
+/**
+ * Generate a static page for a recipe.
+ */
+export async function getStaticProps({
+    params,
+}: GetStaticPropsContext<RecipePageParams>): Promise<
+    GetStaticPropsResult<RecipePageProps>
+> {
+    const client = await clientPromise;
+    const db = client.db(MONGO_DB);
+
+    if (!params) {
+        return { notFound: true };
     }
 
-    const { id } = context.params;
+    const { id } = params;
 
-    try {
-        const { data } = await axios<Recipe>(api(`recipes/${id}`));
-        return {
-            props: {
-                recipe: data,
-            },
-        };
-    } catch (error) {
-        console.error(error);
-        return {
-            redirect: {
-                destination: '/',
-                permanent: false,
-            },
-        };
+    const data = await db.collection<Recipe>('recipes').findOne({ id });
+
+    if (!data) {
+        return { notFound: true };
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _id, ...recipe } = data;
+
+    return {
+        props: {
+            // next can only serialize scalar values, this converts date objects to strings
+            recipe: JSON.parse(JSON.stringify(recipe)),
+        },
+        revalidate: 1,
+    };
 }
 
 export default function RecipePage(props: RecipePageProps) {
+    const router = useRouter();
+
+    if (router.isFallback) {
+        return <Page>Loading...</Page>;
+    }
+
     const { recipe } = props;
 
     return (
