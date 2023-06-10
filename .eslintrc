@@ -11,7 +11,5 @@
         "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
-    "rules": {
-        "no-console": "warn"
-    }
+
 }
