@@ -29,13 +29,22 @@ export async function getServerSideProps(
 
     const { id } = context.params;
 
-    const { data } = await axios<Recipe>(api(`recipes/${id}`));
-
-    return {
-        props: {
-            recipe: data,
-        },
-    };
+    try {
+        const { data } = await axios<Recipe>(api(`recipes/${id}`));
+        return {
+            props: {
+                recipe: data,
+            },
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        };
+    }
 }
 
 export default function RecipePage(props: RecipePageProps) {
