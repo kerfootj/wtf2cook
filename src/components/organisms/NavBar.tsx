@@ -1,9 +1,11 @@
 import { SearchBar, UserMenu } from '@/components/molecules';
+import { Menu } from '@mui/icons-material';
 import {
     AppBar,
     Avatar,
     Box,
     Button,
+    IconButton,
     Toolbar,
     Typography,
     useMediaQuery,
@@ -12,7 +14,8 @@ import {
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
+import { SignInMenu } from '../molecules/SignInMenu';
 
 export function NavBar() {
     return (
@@ -28,19 +31,8 @@ export function NavBar() {
 }
 
 function NavBarContent() {
-    const { data } = useSession();
     const theme = useTheme();
     const is_mobile = useMediaQuery(theme.breakpoints.down('md'));
-
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
 
     return (
         <>
@@ -74,9 +66,7 @@ function NavBarContent() {
                                 backgroundColor: 'white',
                             }}
                         />
-                        {is_mobile ? (
-                            <SearchBar />
-                        ) : (
+                        {!is_mobile && (
                             <Typography
                                 variant="h4"
                                 sx={{
@@ -92,9 +82,10 @@ function NavBarContent() {
 
             <Box
                 sx={{
-                    flex: 1,
-                    display: { xs: 'none', md: 'flex' },
+                    flex: { sm: 4, md: 1 },
+                    display: 'flex',
                     justifyContent: 'center',
+                    mx: 2,
                 }}
             >
                 <SearchBar />
@@ -107,39 +98,95 @@ function NavBarContent() {
                     flex: 1,
                 }}
             >
-                {data ? (
-                    <>
-                        <Avatar
-                            src={data?.user?.image || ''}
-                            alt={data?.user?.name || 'user avatar'}
-                            imgProps={{ referrerPolicy: 'no-referrer' }}
-                            onClick={handleMenuOpen}
-                            sx={{
-                                width: 40,
-                                height: 40,
-                                cursor: 'pointer',
-                            }}
-                        >
-                            J
-                        </Avatar>
-                        <UserMenu
-                            anchorEl={anchorEl}
-                            handleClose={handleMenuClose}
-                        />
-                    </>
-                ) : (
-                    <Link
-                        href="/login"
-                        passHref
-                        style={{
-                            textDecoration: 'none',
-                            color: 'inherit',
-                        }}
-                    >
-                        <Button variant="contained">Sign in</Button>
-                    </Link>
-                )}
+                <AvatarWithUserMenu />
+                <SignIn />
             </Box>
         </>
+    );
+}
+
+/**
+ * Renders the user avatar and the user menu when the avatar is clicked.
+ * If the user is not logged in, this component returns null.
+ */
+function AvatarWithUserMenu(): ReactElement | null {
+    const { data } = useSession();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    if (!data) {
+        return null;
+    }
+
+    return (
+        <>
+            <Avatar
+                src={data?.user?.image || ''}
+                alt={data?.user?.name || 'user avatar'}
+                imgProps={{ referrerPolicy: 'no-referrer' }}
+                onClick={handleMenuOpen}
+                sx={{
+                    width: 40,
+                    height: 40,
+                    cursor: 'pointer',
+                }}
+            />
+            <UserMenu anchorEl={anchorEl} handleClose={handleMenuClose} />
+        </>
+    );
+}
+
+/**
+ * Renders a sign in button if the user is not logged in.
+ */
+function SignIn(): ReactElement | null {
+    const { data } = useSession();
+
+    const theme = useTheme();
+    const is_mobile = useMediaQuery(theme.breakpoints.down('md'));
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    if (data) {
+        return null;
+    }
+
+    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    if (is_mobile) {
+        return (
+            <>
+                <IconButton onClick={handleMenuOpen}>
+                    <Menu />
+                </IconButton>
+                <SignInMenu anchorEl={anchorEl} handleClose={handleMenuClose} />
+            </>
+        );
+    }
+
+    return (
+        <Link
+            href="/login"
+            passHref
+            style={{
+                textDecoration: 'none',
+                color: 'inherit',
+            }}
+        >
+            <Button variant="contained">Sign in</Button>
+        </Link>
     );
 }

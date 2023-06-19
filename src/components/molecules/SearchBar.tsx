@@ -3,6 +3,7 @@ import {
     IconButton,
     InputAdornment,
     OutlinedInput,
+    useMediaQuery,
     useTheme,
 } from '@mui/material';
 import { useState } from 'react';
@@ -10,6 +11,7 @@ import { useSearch } from '../context/SearchContext';
 
 export function SearchBar() {
     const theme = useTheme();
+    const is_small = useMediaQuery(theme.breakpoints.down('sm'));
 
     const { setSearch } = useSearch();
     const [value, setValue] = useState('');
@@ -27,7 +29,7 @@ export function SearchBar() {
                     handleSearch();
                 }
             }}
-            placeholder="Search Recipes"
+            placeholder={'Search' + (is_small ? '' : ' Recipes')}
             endAdornment={
                 <InputAdornment position="end">
                     <IconButton onClick={handleSearch}>

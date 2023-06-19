@@ -1,17 +1,17 @@
 import { Menu, MenuItem } from '@mui/material';
-import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 
-type UserMenuProps = {
+type SignInMenuProps = {
     anchorEl: HTMLElement | null;
     handleClose: () => void;
 };
 
-export function UserMenu(props: UserMenuProps) {
+export function SignInMenu(props: SignInMenuProps) {
     const { anchorEl, handleClose } = props;
 
     return (
         <Menu
-            id="user-menu"
+            id="sign-in-menu"
             anchorEl={anchorEl}
             anchorOrigin={{
                 vertical: 'bottom',
@@ -27,11 +27,19 @@ export function UserMenu(props: UserMenuProps) {
         >
             <MenuItem
                 onClick={() => {
-                    signOut();
                     handleClose();
                 }}
             >
-                Logout
+                <Link
+                    href="/login"
+                    passHref
+                    style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                    }}
+                >
+                    Sign In
+                </Link>
             </MenuItem>
         </Menu>
     );
