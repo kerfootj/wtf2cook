@@ -6,6 +6,12 @@ import type { AppProps } from 'next/app';
 const theme = createTheme({
     palette: {
         mode: 'dark',
+        primary: {
+            main: '#1585FD',
+        },
+        secondary: {
+            main: '#FFC107',
+        },
     },
     typography: {
         fontFamily: ['Inter', 'Arial', 'sans-serif'].join(),
