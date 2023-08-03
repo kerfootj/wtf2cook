@@ -1,3 +1,4 @@
+'use client';
 import { Menu, MenuItem } from '@mui/material';
 import { signOut } from 'next-auth/react';
 

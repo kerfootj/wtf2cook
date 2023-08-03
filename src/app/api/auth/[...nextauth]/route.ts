@@ -1,12 +1,12 @@
 import clientPromise, { MONGO_DB } from '@/lib/mongodb';
 import { nanoid } from '@/lib/nanoid';
 import { User } from '@/types/user.types';
-import NextAuth, { AuthOptions } from 'next-auth';
+import NextAuth from 'next-auth';
 import FacebookProvider from 'next-auth/providers/facebook';
 import GoogleProvider from 'next-auth/providers/google';
 import RedditProvider from 'next-auth/providers/reddit';
 
-export const authOptions: AuthOptions = {
+const handler = NextAuth({
     providers: [
         FacebookProvider({
             clientId: process.env.FACEBOOK_APP_ID as string,
@@ -29,6 +29,8 @@ export const authOptions: AuthOptions = {
     callbacks: {
         async jwt(params) {
             const { token, account, profile } = params;
+
+            console.log('jwt', params);
 
             const mongo = await clientPromise;
             const db = mongo.db(MONGO_DB);
@@ -87,6 +89,6 @@ export const authOptions: AuthOptions = {
     },
 
     secret: process.env.NEXT_AUTH_SECRET,
-};
+});
 
-export default NextAuth(authOptions);
+export { handler as GET, handler as POST };

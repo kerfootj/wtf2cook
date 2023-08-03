@@ -1,3 +1,4 @@
+'use client';
 import { SearchBar, UserMenu } from '@/components/molecules';
 import { Menu } from '@mui/icons-material';
 import {

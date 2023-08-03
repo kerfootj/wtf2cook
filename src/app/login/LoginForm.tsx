@@ -1,25 +1,25 @@
+'use client';
 import { GoogleButton, Logo, RedditButton } from '@/components/atoms';
-import { Page } from '@/components/molecules';
 import { Box, Paper, Typography, useTheme } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import background from '../../../public/images/background.png';
 
-export default function Login() {
+export function LoginForm() {
     const { data } = useSession();
-    const { push } = useRouter();
+    const router = useRouter();
     const theme = useTheme();
 
     // redirect to home if already logged in
     if (data) {
-        push('/');
+        router.push('/');
     }
 
     return (
-        <Page
-            navbar={{ hidden: true }}
+        <div
             style={{
+                height: '100%',
                 backgroundImage: `url(${background.src})`,
                 backgroundRepeat: 'repeat',
             }}
@@ -78,6 +78,6 @@ export default function Login() {
                     </Box>
                 </Paper>
             </Box>
-        </Page>
+        </div>
     );
 }

@@ -1,7 +1,10 @@
-import { SearchContextProvider } from '@/components/context';
+'use client';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import { SessionProvider } from 'next-auth/react';
-import type { AppProps } from 'next/app';
+import { ReactNode } from 'react';
+
+type MUIThemeProviderProps = {
+    children?: ReactNode;
+};
 
 const theme = createTheme({
     palette: {
@@ -41,15 +44,12 @@ const theme = createTheme({
     },
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+export const MUIThemeProvider = (props: MUIThemeProviderProps) => {
+    const { children } = props;
     return (
-        <SessionProvider session={pageProps.session}>
-            <ThemeProvider theme={theme}>
-                <SearchContextProvider>
-                    <CssBaseline />
-                    <Component {...pageProps} />
-                </SearchContextProvider>
-            </ThemeProvider>
-        </SessionProvider>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+        </ThemeProvider>
     );
-}
+};

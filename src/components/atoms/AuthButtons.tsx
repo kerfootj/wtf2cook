@@ -1,3 +1,4 @@
+'use client';
 import styled from '@emotion/styled';
 import { Facebook, Google, Reddit } from '@mui/icons-material';
 import { Button } from '@mui/material';

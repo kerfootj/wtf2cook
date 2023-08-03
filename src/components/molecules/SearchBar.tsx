@@ -1,3 +1,4 @@
+'use client';
 import { Search } from '@mui/icons-material';
 import {
     IconButton,
@@ -6,18 +7,23 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useSearch } from '../context/SearchContext';
 
 export function SearchBar() {
     const theme = useTheme();
     const is_small = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const { setSearch } = useSearch();
+    const router = useRouter();
+
     const [value, setValue] = useState('');
 
     const handleSearch = () => {
-        setSearch(value);
+        if (value === '') {
+            router.push('/');
+        } else {
+            router.push('?search=' + value);
+        }
     };
 
     return (

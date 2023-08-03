@@ -1,8 +1,12 @@
-import { Box } from '@mui/material';
+export const metadata = {
+    metadataBase: new URL('https://www.wtf2cook.ca'),
+    title: 'Privacy Policy - WTF 2 Cook',
+    description: 'Privacy policy for wtf2cook.ca.',
+};
 
 export default function PrivacyPolicy() {
     return (
-        <Box sx={{ mx: 2 }}>
+        <div style={{ margin: '0 16px' }}>
             <h1>Privacy Policy</h1>
             <p>Last updated: May 04, 2023</p>
             <p>
@@ -591,6 +595,6 @@ export default function PrivacyPolicy() {
             <ul>
                 <li>By email: joelkerfoot@gmail.com</li>
             </ul>
-        </Box>
+        </div>
     );
 }
