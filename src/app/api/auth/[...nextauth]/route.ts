@@ -30,8 +30,6 @@ const handler = NextAuth({
         async jwt(params) {
             const { token, account, profile } = params;
 
-            console.log('jwt', params);
-
             const mongo = await clientPromise;
             const db = mongo.db(MONGO_DB);
 

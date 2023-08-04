@@ -62,7 +62,7 @@ function NavBarContent() {
                             width={42}
                             height={42}
                             style={{
-                                border: '1px solid white',
+                                border: `2px solid ${theme.palette.primary.main}`,
                                 borderRadius: '50%',
                                 backgroundColor: 'white',
                             }}
@@ -72,6 +72,7 @@ function NavBarContent() {
                                 variant="h4"
                                 sx={{
                                     fontFamily: 'Indie Flower',
+                                    color: 'primary.main',
                                 }}
                             >
                                 WTF 2 Cook

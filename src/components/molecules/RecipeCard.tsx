@@ -1,4 +1,5 @@
 'use client';
+import { getURLFromRecipe } from '@/lib/getURLFromRecipe';
 import { Recipe } from '@/types';
 import {
     Card,
@@ -16,13 +17,13 @@ interface RecipeCardProps {
 
 export function RecipeCard(props: RecipeCardProps) {
     const { recipe } = props;
-    const { id, name, description, photo_url } = recipe;
+    const { name, description, photo_url } = recipe;
 
     return (
         <Card sx={{ height: 410 }}>
             <Link
                 passHref
-                href={`/recipe/${id}/${name.toLowerCase().replace(/ +/g, '-')}`}
+                href={getURLFromRecipe(recipe)}
                 style={{ textDecoration: 'none', color: 'inherit' }}
             >
                 <CardActionArea>

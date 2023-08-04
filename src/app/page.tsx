@@ -1,7 +1,7 @@
-import { RecipeGrid } from '@/components/organisms/RecipeGrid';
 import clientPromise, { MONGO_DB } from '@/lib/mongodb';
 import { Recipe } from '@/types';
 import { Filter } from 'mongodb';
+import { Home } from './home/Home';
 
 export const metadata = {
     metadataBase: new URL('https://www.wtf2cook.ca'),
@@ -37,7 +37,7 @@ export default async function HomePage(props: {
         .toArray();
 
     return (
-        <RecipeGrid
+        <Home
             recipes={JSON.parse(
                 JSON.stringify(recipes.sort(() => Math.random() - 0.5)),
             )}
