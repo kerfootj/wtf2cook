@@ -1,3 +1,4 @@
+export * from './AddRecipe';
 export * from './Ingredients';
 export * from './Instructions';
 export * from './RecipeCard';

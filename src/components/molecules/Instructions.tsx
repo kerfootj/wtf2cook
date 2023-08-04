@@ -1,3 +1,4 @@
+'use client';
 import { generateListKey } from '@/lib/key';
 import { Recipe } from '@/types';
 import { List, ListItem, Typography } from '@mui/material';
