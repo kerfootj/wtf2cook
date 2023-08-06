@@ -39,7 +39,7 @@ export function LoginForm() {
                         px: 2,
                         py: 4,
                         mb: 8,
-                        background: theme.palette.grey['900'],
+                        background: theme.palette.grey[900],
                     }}
                 >
                     <Box

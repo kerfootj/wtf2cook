@@ -16,11 +16,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { LoadingBurger } from '../atoms';
-import {
-    Ingredients,
-    Instructions,
-    RecipeServingsAndTimings,
-} from '../molecules';
+import { NestedList, RecipeServingsAndTimings } from '../molecules';
 import { Recipe as RecipeDetails } from './Recipe';
 
 type FeaturedRecipeProps = {
@@ -133,7 +129,7 @@ function FeaturedRecipeDesktop(props: FeaturedRecipeProps) {
 
                 <Box
                     sx={{
-                        borderBottom: `1px solid ${theme.palette.grey['600']}`,
+                        borderBottom: `1px solid ${theme.palette.grey[600]}`,
                         width: '100%',
                         mb: 2,
                     }}
@@ -154,9 +150,9 @@ function FeaturedRecipeDesktop(props: FeaturedRecipeProps) {
 
                             <RecipeServingsAndTimings recipe={recipe} />
 
-                            <Ingredients recipe={recipe} />
+                            <NestedList recipe={recipe} type="ingredients" />
 
-                            <Instructions recipe={recipe} />
+                            <NestedList recipe={recipe} type="instructions" />
                         </>
                     ) : (
                         <>
@@ -220,7 +216,7 @@ function FeaturedRecipeMobile(props: FeaturedRecipeProps) {
 
             <Box
                 sx={{
-                    borderBottom: `1px solid ${theme.palette.grey['600']}`,
+                    borderBottom: `1px solid ${theme.palette.grey[600]}`,
                     width: '100%',
                     mb: 2,
                 }}

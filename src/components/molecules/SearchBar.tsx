@@ -22,7 +22,7 @@ export function SearchBar() {
         if (value === '') {
             router.push('/');
         } else {
-            router.push('?search=' + value);
+            router.push('/?search=' + value);
         }
     };
 
@@ -46,7 +46,7 @@ export function SearchBar() {
             sx={{
                 flex: 1,
                 fontFamily: 'Inter',
-                background: theme.palette.grey['900'],
+                background: theme.palette.grey[900],
                 height: 48,
             }}
         />

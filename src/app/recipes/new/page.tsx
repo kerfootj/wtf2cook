@@ -25,7 +25,7 @@ const StyleTextArea = styled(TextareaAutosize)(
         css`
             color: white;
             background: transparent;
-            border: 1px solid ${theme.palette.grey['700']};
+            border: 1px solid ${theme.palette.grey[700]};
             border-radius: 8px;
 
             width: 100%;
@@ -107,7 +107,7 @@ export default function NewRecipe() {
 
             <Box
                 sx={{
-                    background: (theme) => theme.palette.grey['700'],
+                    background: (theme) => theme.palette.grey[700],
                     width: '100%',
                     height: '1px',
                     mt: 2,

@@ -1,0 +1,161 @@
+import { Recipe, Session } from '@/types';
+import { useSession } from 'next-auth/react';
+import { ReactNode, createContext, useContext, useState } from 'react';
+
+type UpdateValue = string | number | Record<string, string | string[]> | null;
+
+interface IRecipeContext {
+    recipe: Recipe;
+
+    editable: boolean;
+    editing: boolean;
+    edit: () => void;
+
+    update: (key: string) => (value: UpdateValue) => void;
+    cancel: () => void;
+
+    preview: () => void;
+    previewing: boolean;
+
+    save: () => Promise<void>;
+}
+
+const RecipeContext = createContext<IRecipeContext>({
+    recipe: {} as Recipe,
+
+    editable: false,
+    editing: false,
+    edit: () => {},
+
+    update: () => () => {},
+    cancel: () => {},
+
+    preview: () => {},
+    previewing: false,
+
+    save: async () => {},
+});
+
+export function useRecipe() {
+    return useContext(RecipeContext);
+}
+
+/**
+ * Maintain the state of the recipe and provide methods to update it.
+ */
+export function RecipeProvider(props: { children: ReactNode; recipe: Recipe }) {
+    const [recipe, setRecipe] = useState(props.recipe);
+    const [editing, setEditing] = useState(false);
+    const [previewing, setPreviewing] = useState(false);
+
+    /**
+     * Check if the current user is the author of the recipe.
+     * If so, they can edit the recipe.
+     */
+    const session = useSession();
+    const editable =
+        (session.data as Session['data'])?.user?.id === recipe.user_id;
+
+    /**
+     * Puts the recipe into edit mode.
+     */
+    const edit = () => {
+        setEditing(true);
+        setPreviewing(false);
+    };
+
+    /**
+     * Handles updating the recipe state.
+     */
+    const update = (key: string) => (value: UpdateValue) => {
+        // create a deep copy of the recipe
+        const updated_recipe = structuredClone(recipe);
+
+        /**
+         * Convert object dot notated key to an array of keys
+         * e.g. "ingredients[0].title" -> ["ingredients", 0, "tile"]
+         */
+        const keys = key.replace(/\[(\d+)\]/g, '.$1').split('.');
+
+        // create a reference to the object
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let current: Record<string, any> = updated_recipe;
+        for (const k of keys.slice(0, -1)) {
+            // iterate the keys updating the reference to the nested property
+            current = current[k];
+        }
+
+        // using the reference, update the value
+        current[keys[keys.length - 1]] = value;
+
+        setRecipe(updated_recipe);
+    };
+
+    /**
+     * Reverts any changes made to the recipe and exits edit mode.
+     */
+    const cancel = () => {
+        setRecipe(props.recipe);
+        setEditing(false);
+        setPreviewing(false);
+    };
+
+    /**
+     * Toggles the preview mode.
+     */
+    const preview = () => {
+        setEditing(false);
+        setPreviewing(true);
+    };
+
+    /**
+     * Saves the recipe to the database.
+     */
+    const save = async () => {
+        // create a deep copy of the recipe
+        const recipe_to_save = structuredClone(recipe);
+
+        // filter out any empty ingredients
+        recipe_to_save.ingredients = recipe_to_save.ingredients
+            .filter((ingredients) => !!ingredients)
+            .map((ingredients) => {
+                ingredients.ingredients = ingredients.ingredients.filter(
+                    (ingredient) => !!ingredient,
+                );
+
+                return ingredients;
+            });
+
+        // filter out any empty instructions
+        recipe_to_save.instructions = recipe_to_save.instructions
+            .filter((instruction) => !!instruction)
+            .map((instruction) => {
+                instruction.instructions = instruction.instructions.filter(
+                    (instruction) => !!instruction,
+                );
+
+                return instruction;
+            });
+
+        console.log(recipe);
+        console.log(recipe_to_save);
+    };
+
+    return (
+        <RecipeContext.Provider
+            value={{
+                recipe,
+                editable,
+                editing,
+                edit,
+                update,
+                cancel,
+                preview,
+                previewing,
+                save,
+            }}
+        >
+            {props.children}
+        </RecipeContext.Provider>
+    );
+}
