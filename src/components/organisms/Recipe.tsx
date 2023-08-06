@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { EditorTextArea } from '../atoms';
 import { RecipeProvider, useRecipe } from '../context/RecipeContext';
 import { NestedList, RecipeServingsAndTimings } from '../molecules';
+import { ImageUpload } from '../molecules/ImageUpload/ImageUpload';
 
 type RecipeProps = {
     recipe: Recipe;
@@ -138,18 +139,36 @@ function RecipeContent() {
                     <RecipeServingsAndTimings recipe={recipe} />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                    {recipe.photo_url && (
+                    <Box sx={{ position: 'relative' }}>
                         <Image
-                            src={recipe.photo_url}
+                            src={recipe.photo_url || '/images/placeholder.svg'}
                             alt={recipe.name}
-                            width={180}
-                            height={180}
+                            width={192}
+                            height={192}
                             style={{
-                                borderRadius: '50%',
+                                borderRadius: '2%',
                                 objectFit: 'cover',
                             }}
                         />
-                    )}
+
+                        {editing && (
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    width: 192,
+                                    height: 192,
+                                    top: 0,
+                                    background: 'rgba(0, 0, 0, 0.69)',
+                                }}
+                            >
+                                <ImageUpload
+                                    onDrop={(files) => {
+                                        console.log(files);
+                                    }}
+                                />
+                            </Box>
+                        )}
+                    </Box>
                 </Grid>
             </Grid>
             <Box
