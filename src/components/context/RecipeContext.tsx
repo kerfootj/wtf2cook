@@ -1,6 +1,10 @@
+import { saveRecipe } from '@/app/actions/saveRecipe';
+import { getURLFromRecipe } from '@/lib/getURLFromRecipe';
 import { Recipe, Session } from '@/types';
 import { useSession } from 'next-auth/react';
-import { ReactNode, createContext, useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { PropsWithChildren, createContext, useContext, useState } from 'react';
+import { RecipeProps } from '../organisms';
 
 type UpdateValue = string | number | Record<string, string | string[]> | null;
 
@@ -17,6 +21,7 @@ interface IRecipeContext {
     preview: () => void;
     previewing: boolean;
 
+    saving: boolean;
     save: () => Promise<void>;
 }
 
@@ -33,6 +38,7 @@ const RecipeContext = createContext<IRecipeContext>({
     preview: () => {},
     previewing: false,
 
+    saving: false,
     save: async () => {},
 });
 
@@ -43,10 +49,13 @@ export function useRecipe() {
 /**
  * Maintain the state of the recipe and provide methods to update it.
  */
-export function RecipeProvider(props: { children: ReactNode; recipe: Recipe }) {
+export function RecipeProvider(props: PropsWithChildren<RecipeProps>) {
     const [recipe, setRecipe] = useState(props.recipe);
-    const [editing, setEditing] = useState(false);
+    const [editing, setEditing] = useState(props.editing || false);
+    const [saving, setSaving] = useState(false);
     const [previewing, setPreviewing] = useState(false);
+
+    const router = useRouter();
 
     /**
      * Check if the current user is the author of the recipe.
@@ -112,6 +121,8 @@ export function RecipeProvider(props: { children: ReactNode; recipe: Recipe }) {
      * Saves the recipe to the database.
      */
     const save = async () => {
+        setSaving(true);
+
         // create a deep copy of the recipe
         const recipe_to_save = structuredClone(recipe);
 
@@ -137,8 +148,11 @@ export function RecipeProvider(props: { children: ReactNode; recipe: Recipe }) {
                 return instruction;
             });
 
-        console.log(recipe);
-        console.log(recipe_to_save);
+        await saveRecipe(recipe_to_save);
+
+        setSaving(false);
+
+        router.push(getURLFromRecipe(recipe_to_save));
     };
 
     return (
@@ -152,6 +166,7 @@ export function RecipeProvider(props: { children: ReactNode; recipe: Recipe }) {
                 cancel,
                 preview,
                 previewing,
+                saving,
                 save,
             }}
         >

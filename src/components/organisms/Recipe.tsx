@@ -1,19 +1,21 @@
 'use client';
+
 import { Recipe } from '@/types';
 import { Clear, Edit, Save, Visibility } from '@mui/icons-material';
-import { Box, Button, Grid, Paper } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Paper } from '@mui/material';
 import Image from 'next/image';
 import { EditorTextArea } from '../atoms';
 import { RecipeProvider, useRecipe } from '../context/RecipeContext';
 import { NestedList, RecipeServingsAndTimings } from '../molecules';
 import { ImageUpload } from '../molecules/ImageUpload/ImageUpload';
 
-type RecipeProps = {
+export type RecipeProps = {
     recipe: Recipe;
+    editing?: boolean;
 };
 
 export function Recipe(props: RecipeProps) {
-    const { recipe } = props;
+    const { recipe, editing } = props;
 
     return (
         <Box
@@ -23,7 +25,7 @@ export function Recipe(props: RecipeProps) {
                 my: 2,
             }}
         >
-            <RecipeProvider recipe={recipe}>
+            <RecipeProvider recipe={recipe} editing={editing}>
                 <RecipeContent />
             </RecipeProvider>
         </Box>
@@ -40,6 +42,7 @@ function RecipeContent() {
         cancel,
         preview,
         previewing,
+        saving,
         save,
     } = useRecipe();
 
@@ -89,14 +92,22 @@ function RecipeContent() {
                             variant="outlined"
                             endIcon={<Edit />}
                             onClick={edit}
+                            disabled={saving}
                         >
                             Edit
                         </Button>
 
                         <Button
                             variant="outlined"
-                            endIcon={<Save />}
+                            endIcon={
+                                saving ? (
+                                    <CircularProgress size={20} />
+                                ) : (
+                                    <Save />
+                                )
+                            }
                             onClick={save}
+                            disabled={saving}
                         >
                             Save
                         </Button>
@@ -106,6 +117,7 @@ function RecipeContent() {
                             color="secondary"
                             endIcon={<Clear />}
                             onClick={cancel}
+                            disabled={saving}
                         >
                             Cancel
                         </Button>
@@ -128,12 +140,19 @@ function RecipeContent() {
                             fontWeight: 600,
                             sx: { mb: 2 },
                         }}
+                        editor={{
+                            placeholder: 'Recipe Name',
+                        }}
                     />
 
                     <EditorTextArea
                         value={recipe.description}
                         onChange={update('description')}
                         typography={{ variant: 'body1', sx: { mb: 2 } }}
+                        editor={{
+                            placeholder: 'Recipe Description',
+                            minRows: 3,
+                        }}
                     />
 
                     <RecipeServingsAndTimings recipe={recipe} />
@@ -145,6 +164,7 @@ function RecipeContent() {
                             alt={recipe.name}
                             width={192}
                             height={192}
+                            priority
                             style={{
                                 borderRadius: '2%',
                                 objectFit: 'cover',
@@ -162,8 +182,8 @@ function RecipeContent() {
                                 }}
                             >
                                 <ImageUpload
-                                    onDrop={(files) => {
-                                        console.log(files);
+                                    onDrop={(image) => {
+                                        update('photo_url')(image.url);
                                     }}
                                 />
                             </Box>
