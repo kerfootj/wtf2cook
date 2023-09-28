@@ -16,7 +16,7 @@ export function AddRecipe() {
         <Paper sx={{ px: 2, py: 3, width: '100%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography variant="h5" sx={{ userSelect: 'none' }}>
-                    What the F*ck are these recipes? Submit your own.
+                    What the f*ck are these recipes? Submit your own.
                 </Typography>
 
                 <Link
