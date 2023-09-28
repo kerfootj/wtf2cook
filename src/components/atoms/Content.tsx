@@ -13,7 +13,13 @@ export function Content(props: ContentProps) {
     const { children } = props;
 
     return (
-        <div style={{ height: 'calc(100vh - 64px)', overflowY: 'auto' }}>
+        <div
+            style={{
+                height: 'calc(100vh - 64px)',
+                overflowY: 'auto',
+                scrollbarGutter: 'stable both-edges',
+            }}
+        >
             {children}
         </div>
     );

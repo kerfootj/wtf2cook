@@ -5,7 +5,6 @@ import { Recipe } from '@/types';
 import {
     Box,
     Button,
-    Grid,
     Paper,
     Skeleton,
     Typography,
@@ -14,13 +13,10 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { LoadingBurger } from '../atoms';
-import {
-    Ingredients,
-    Instructions,
-    RecipeServingsAndTimings,
-} from '../molecules';
+import { NestedList, RecipeServingsAndTimings } from '../molecules';
 import { Recipe as RecipeDetails } from './Recipe';
 
 type FeaturedRecipeProps = {
@@ -33,6 +29,9 @@ const FEATURED_RECIPE_BREAKPOINT = 1090;
 
 export function FeaturedRecipe() {
     const theme = useTheme();
+    const params = useSearchParams();
+
+    const search = params.get('search');
 
     const [recipe, setRecipe] = useState<Recipe | null>(null);
     const [loading, setLoading] = useState(true);
@@ -54,31 +53,26 @@ export function FeaturedRecipe() {
         theme.breakpoints.down(FEATURED_RECIPE_BREAKPOINT),
     );
 
+    if (search) {
+        return null;
+    }
+
     return (
-        <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            sx={{ my: 2 }}
-        >
-            <Grid container item xs={11} lg={10} xl={8} spacing={1}>
-                <Paper sx={{ width: '100%', ml: 1 }}>
-                    {is_small ? (
-                        <FeaturedRecipeMobile
-                            recipe={recipe}
-                            loading={loading}
-                            onNext={() => setNext(true)}
-                        />
-                    ) : (
-                        <FeaturedRecipeDesktop
-                            recipe={recipe}
-                            loading={loading}
-                            onNext={() => setNext(true)}
-                        />
-                    )}
-                </Paper>
-            </Grid>
-        </Grid>
+        <Paper sx={{ width: '100%' }}>
+            {is_small ? (
+                <FeaturedRecipeMobile
+                    recipe={recipe}
+                    loading={loading}
+                    onNext={() => setNext(true)}
+                />
+            ) : (
+                <FeaturedRecipeDesktop
+                    recipe={recipe}
+                    loading={loading}
+                    onNext={() => setNext(true)}
+                />
+            )}
+        </Paper>
     );
 }
 
@@ -135,7 +129,7 @@ function FeaturedRecipeDesktop(props: FeaturedRecipeProps) {
 
                 <Box
                     sx={{
-                        borderBottom: `1px solid ${theme.palette.grey['600']}`,
+                        borderBottom: `1px solid ${theme.palette.grey[600]}`,
                         width: '100%',
                         mb: 2,
                     }}
@@ -156,9 +150,9 @@ function FeaturedRecipeDesktop(props: FeaturedRecipeProps) {
 
                             <RecipeServingsAndTimings recipe={recipe} />
 
-                            <Ingredients recipe={recipe} />
+                            <NestedList recipe={recipe} type="ingredients" />
 
-                            <Instructions recipe={recipe} />
+                            <NestedList recipe={recipe} type="instructions" />
                         </>
                     ) : (
                         <>
@@ -222,7 +216,7 @@ function FeaturedRecipeMobile(props: FeaturedRecipeProps) {
 
             <Box
                 sx={{
-                    borderBottom: `1px solid ${theme.palette.grey['600']}`,
+                    borderBottom: `1px solid ${theme.palette.grey[600]}`,
                     width: '100%',
                     mb: 2,
                 }}
