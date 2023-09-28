@@ -8,7 +8,7 @@ import { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { DropZoneContainer, DropZoneContent } from './ImageUpload.styles';
 
-const IMAGE_TYPES = ['.png', '.jpg', '.webp'];
+const IMAGE_TYPES = ['.png', '.jpg'];
 
 export type ImageUploadProps = {
     multiple?: boolean;
