@@ -4,8 +4,12 @@
         "fixTypes": ["problem", "suggestion", "layout"]
     },
     "eslint.workingDirectories": [{ "mode": "auto" }],
-    "cSpell.words": ["autosize", "dotenv", "imgur", "Kerfoot", "Throughputs"],
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.black-formatter"
-    }
+    "cSpell.words": [
+        "autosize",
+        "dotenv",
+        "imgur",
+        "kerfoot",
+        "throughputs",
+        "upsert"
+    ]
 }

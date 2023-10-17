@@ -1,4 +1,4 @@
-import { saveRecipe } from '@/app/actions/saveRecipe';
+import { upsertRecipe } from '@/app/actions/upsertRecipe';
 import { getURLFromRecipe } from '@/lib/getURLFromRecipe';
 import { Recipe, Session } from '@/types';
 import { useSession } from 'next-auth/react';
@@ -148,7 +148,7 @@ export function RecipeProvider(props: PropsWithChildren<RecipeProps>) {
                 return instruction;
             });
 
-        await saveRecipe(recipe_to_save);
+        await upsertRecipe(recipe_to_save);
 
         setSaving(false);
 
