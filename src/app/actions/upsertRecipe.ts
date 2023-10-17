@@ -1,7 +1,9 @@
 'use server';
 
+import { getURLFromRecipe } from '@/lib/getURLFromRecipe';
 import clientPromise, { MONGO_DB } from '@/lib/mongodb';
 import { Recipe } from '@/types';
+import { revalidatePath } from 'next/cache';
 
 export async function upsertRecipe(recipe: Recipe & { _id?: string }) {
     const client = await clientPromise;
@@ -19,4 +21,7 @@ export async function upsertRecipe(recipe: Recipe & { _id?: string }) {
             { $set: recipe as Recipe },
             { upsert: true },
         );
+
+    // revalidate the recipe page to update the cache on the next page load
+    revalidatePath(getURLFromRecipe(recipe));
 }
