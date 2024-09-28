@@ -1,6 +1,15 @@
 'use client';
-import { Menu, MenuItem } from '@mui/material';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import LogoutIcon from '@mui/icons-material/Logout';
+import {
+    Divider,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+} from '@mui/material';
 import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 
 type UserMenuProps = {
     anchorEl: HTMLElement | null;
@@ -26,13 +35,32 @@ export function UserMenu(props: UserMenuProps) {
             onClose={handleClose}
             sx={{ mt: 1 }}
         >
+            <MenuItem>
+                <ListItemIcon>
+                    <AddCircleOutlineOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                <Link
+                    href="/recipes/new"
+                    passHref
+                    style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                    }}
+                >
+                    <ListItemText>Add recipe</ListItemText>
+                </Link>
+            </MenuItem>
+            <Divider />
             <MenuItem
                 onClick={() => {
                     signOut();
                     handleClose();
                 }}
             >
-                Logout
+                <ListItemIcon>
+                    <LogoutIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Logout</ListItemText>
             </MenuItem>
         </Menu>
     );

@@ -20,7 +20,7 @@ export function RecipeCard(props: RecipeCardProps) {
     const { name, description, photo_url } = recipe;
 
     return (
-        <Card sx={{ height: 410 }}>
+        <Card sx={{ height: { md: 410 }, maxWidth: { md: 410 } }}>
             <Link
                 passHref
                 href={getURLFromRecipe(recipe)}

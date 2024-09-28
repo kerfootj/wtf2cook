@@ -20,13 +20,13 @@ import { SignInMenu } from '../molecules/SignInMenu';
 
 export function NavBar() {
     return (
-        <Box sx={{ flex: '1' }}>
+        <Box sx={{ mb: 2 }}>
             <AppBar position="fixed">
                 <Toolbar>
                     <NavBarContent />
                 </Toolbar>
             </AppBar>
-            <Box sx={{ height: 64 }}></Box>
+            <Box sx={{ height: 64 }} />
         </Box>
     );
 }

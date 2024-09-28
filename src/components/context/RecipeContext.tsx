@@ -151,6 +151,8 @@ export function RecipeProvider(props: PropsWithChildren<RecipeProps>) {
         await upsertRecipe(recipe_to_save);
 
         setSaving(false);
+        setEditing(false);
+        setPreviewing(false);
 
         router.push(getURLFromRecipe(recipe_to_save));
     };

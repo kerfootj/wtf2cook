@@ -1,6 +1,6 @@
 'use client';
 
-import { Recipe } from '@/types';
+import type { Recipe } from '@/types';
 import { Clear, Edit, Save, Visibility } from '@mui/icons-material';
 import { Box, Button, CircularProgress, Grid, Paper } from '@mui/material';
 import Image from 'next/image';

@@ -31,12 +31,13 @@ const theme = createTheme({
                         width: '8px',
                     },
                     '*::-webkit-scrollbar-track': {
-                        background: '#272727',
+                        background: '#121212',
                     },
                     '*::-webkit-scrollbar-thumb': {
                         borderRadius: 8,
-                        background: '#696969',
+                        background: '#404040',
                         minHeight: 24,
+                        filter: 'drop-shadow(0 -6mm 4mm rgb(160, 0, 210))',
                     },
                 },
             },
