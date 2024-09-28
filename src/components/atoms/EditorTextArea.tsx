@@ -45,6 +45,8 @@ export function EditorTextArea(props: EditorTextAreaProps) {
             {...editor}
             value={value || ''}
             onChange={(event) => onChange(event.target.value)}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             style={theme.typography[typography.variant]}
         />
     ) : (
