@@ -97,6 +97,28 @@ export function RecipeProvider(props: PropsWithChildren<RecipeProps>) {
         // using the reference, update the value
         current[keys[keys.length - 1]] = value;
 
+        // help copy ingredients and instructions from other sites
+        const separateNewLines = (values: Array<string | null>): string[] => {
+            return values
+                .flatMap((value) => value?.split('\n') || [])
+                .filter((v) => !!v)
+                .map((value) => value.replace(/^\d+\.\s/, ''));
+        };
+
+        updated_recipe.ingredients = updated_recipe.ingredients.map(
+            (ingredients) => ({
+                ...ingredients,
+                ingredients: separateNewLines(ingredients.ingredients),
+            }),
+        );
+
+        updated_recipe.instructions = updated_recipe.instructions.map(
+            (instructions) => ({
+                ...instructions,
+                instructions: separateNewLines(instructions.instructions),
+            }),
+        );
+
         setRecipe(updated_recipe);
     };
 
