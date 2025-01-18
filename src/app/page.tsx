@@ -19,7 +19,9 @@ export const metadata = {
 export default async function HomePage(props: {
     searchParams: { [key: string]: string };
 }) {
-    const { search } = props.searchParams;
+    const { search, page = '1' } = props.searchParams;
+    const ITEMS_PER_PAGE = 30;
+    const currentPage = parseInt(page);
 
     const find: Filter<Recipe> = {};
 
@@ -33,14 +35,20 @@ export default async function HomePage(props: {
     const recipes = await db
         .collection<Recipe>('recipes')
         .find(find)
-        .limit(40)
+        .skip((currentPage - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE)
         .toArray();
+
+    const totalRecipes = await db
+        .collection<Recipe>('recipes')
+        .countDocuments(find);
+    const hasMore = totalRecipes > currentPage * ITEMS_PER_PAGE;
 
     return (
         <Home
-            recipes={JSON.parse(
-                JSON.stringify(recipes.sort(() => Math.random() - 0.5)),
-            )}
+            initialRecipes={JSON.parse(JSON.stringify(recipes))}
+            hasMore={hasMore}
+            search={search}
         />
     );
 }

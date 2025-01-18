@@ -1,14 +1,16 @@
 'use client';
 import { Recipe } from '@/types';
-import { Grid } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 import { RecipeCard } from '../molecules';
 
 interface RecipeGridProps {
     recipes: Recipe[];
+    loadingRef?: (node?: Element | null) => void;
+    loading?: boolean;
 }
 
 export function RecipeGrid(props: RecipeGridProps) {
-    const { recipes } = props;
+    const { recipes, loadingRef, loading } = props;
 
     return (
         <Grid
@@ -30,7 +32,7 @@ export function RecipeGrid(props: RecipeGridProps) {
                 },
                 overflowY: {
                     xs: 'scroll',
-                    md: 'hidden',
+                    md: 'auto',
                 },
                 scrollSnapType: {
                     xs: 'y mandatory',
@@ -56,6 +58,17 @@ export function RecipeGrid(props: RecipeGridProps) {
                     <RecipeCard key={recipe.id} recipe={recipe} />
                 </Grid>
             ))}
+
+            {loadingRef && (
+                <Grid
+                    item
+                    xs={12}
+                    ref={loadingRef}
+                    sx={{ textAlign: 'center', py: 2 }}
+                >
+                    {loading && <CircularProgress />}
+                </Grid>
+            )}
         </Grid>
     );
 }
