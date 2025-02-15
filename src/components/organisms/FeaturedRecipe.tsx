@@ -245,6 +245,7 @@ function FuckItButtons(props: FeaturedRecipeProps) {
                                 fontSize: '1.2rem',
                                 fontWeight: 600,
                                 lineHeight: '1.4rem',
+                                backgroundColor: '#255fbd',
                             }}
                         >
                             F*ck Yeah!
@@ -252,7 +253,6 @@ function FuckItButtons(props: FeaturedRecipeProps) {
                     </Link>
                     <Button
                         onClick={onNext}
-                        color="secondary"
                         variant="contained"
                         sx={{
                             width: 140,
@@ -261,6 +261,7 @@ function FuckItButtons(props: FeaturedRecipeProps) {
                             fontSize: '1.2rem',
                             fontWeight: 600,
                             lineHeight: '1.4rem',
+                            backgroundColor: '#9f1311',
                         }}
                     >
                         F*ck No!

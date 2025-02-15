@@ -1,5 +1,5 @@
 'use client';
-import { Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem, useTheme } from '@mui/material';
 import Link from 'next/link';
 
 type SignInMenuProps = {
@@ -9,6 +9,7 @@ type SignInMenuProps = {
 
 export function SignInMenu(props: SignInMenuProps) {
     const { anchorEl, handleClose } = props;
+    const theme = useTheme();
 
     return (
         <Menu
@@ -26,17 +27,13 @@ export function SignInMenu(props: SignInMenuProps) {
             onClose={handleClose}
             sx={{ mt: 1 }}
         >
-            <MenuItem
-                onClick={() => {
-                    handleClose();
-                }}
-            >
+            <MenuItem onClick={handleClose}>
                 <Link
                     href="/login"
                     passHref
                     style={{
                         textDecoration: 'none',
-                        color: 'inherit',
+                        color: theme.palette.common.white,
                     }}
                 >
                     Sign In

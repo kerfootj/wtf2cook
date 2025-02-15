@@ -21,7 +21,7 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID as string;
  */
 export async function uploadImage(image: string) {
     if (!IMGUR_CLIENT_ID) {
-        throw new Error('Invalid environment variable: "IMGUR_CLIENT_ID"');
+        throw new Error('Missing environment variable: "IMGUR_CLIENT_ID"');
     }
 
     // remove the datatype prefix - data:image/png;base64
@@ -46,8 +46,6 @@ export async function uploadImage(image: string) {
             console.error(error);
         }
 
-        return {
-            url: '',
-        };
+        return { url: '' };
     }
 }

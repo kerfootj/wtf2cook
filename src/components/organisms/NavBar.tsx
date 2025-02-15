@@ -13,9 +13,9 @@ import {
     useTheme,
 } from '@mui/material';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ReactElement, useState } from 'react';
+import { Logo } from '../atoms';
 import { SignInMenu } from '../molecules/SignInMenu';
 
 export function NavBar() {
@@ -56,23 +56,14 @@ function NavBarContent() {
                             gap: 2,
                         }}
                     >
-                        <Image
-                            src="/images/logo.svg"
-                            alt="logo"
-                            width={42}
-                            height={42}
-                            style={{
-                                border: `2px solid ${theme.palette.primary.main}`,
-                                borderRadius: '50%',
-                                backgroundColor: 'white',
-                            }}
-                        />
+                        <Logo fill={theme.palette.common.white} />
+
                         {!is_mobile && (
                             <Typography
                                 variant="h4"
                                 sx={{
                                     fontFamily: 'Indie Flower',
-                                    color: 'primary.main',
+                                    // color: 'primary.main',
                                 }}
                             >
                                 WTF 2 Cook
@@ -185,10 +176,14 @@ function SignIn(): ReactElement | null {
             passHref
             style={{
                 textDecoration: 'none',
-                color: 'inherit',
             }}
         >
-            <Button variant="contained">Sign in</Button>
+            <Button
+                variant="contained"
+                sx={{ backgroundColor: theme.palette.grey[800] }}
+            >
+                Sign in
+            </Button>
         </Link>
     );
 }
