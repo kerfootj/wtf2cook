@@ -2,18 +2,19 @@ import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const getSeedAnimation = (offset: number, rotation: number) => keyframes`
-    ${offset * 5 + '%'} {
+    0%, ${offset * 5 + '%'} {
         visibility: hidden;
-        transform: translateY(-20em) rotate(${rotation}deg);
+        transform: translateY(-25em) rotate(${rotation}deg);
     }
 
-    ${offset * 5 + 10 + '%'}, 75% {
+    ${offset * 5 + '%'}, 75% {
         visibility: visible;
         transform: translateY(0em) rotate(${rotation}deg);
     }
 
-    100% {
+    75.1%, 100% {
         visibility: hidden;
+        transform: translateY(25em) rotate(${rotation}deg);
     }
 `;
 
@@ -50,7 +51,7 @@ export const TakeOutBox = styled.div<{ size: number }>`
     overflow: hidden;
 `;
 
-export const SesameSeed = styled.div<{
+const SesameSeed = styled.div<{
     top: number;
     left: number;
     rotation: number;
@@ -70,11 +71,45 @@ export const SesameSeed = styled.div<{
 
     animation: ${(props) =>
             getSeedAnimation(
-                Math.floor(Math.random() * (85 - 60) + 60) / 10,
+                Math.floor(Math.random() * (85 - 45) + 45) / 10,
                 props.rotation,
             )}
         4s ease-in-out 250ms infinite normal;
 `;
+
+export const SesameSeeds = () => {
+    const seeds = [
+        { top: 0.2, left: 3.5, rotation: 30 },
+        { top: 0.5, left: 6.5, rotation: 148 },
+        { top: 0.8, left: 9.5, rotation: 210 },
+        { top: 0.4, left: 12.5, rotation: 92 },
+        { top: 1.2, left: 1.5, rotation: 276 },
+        { top: 1.5, left: 4.9, rotation: 316 },
+        { top: 1.8, left: 7.8, rotation: 143 },
+        { top: 1.5, left: 11.2, rotation: 269 },
+        { top: 1.7, left: 14.0, rotation: 318 },
+        { top: 2.4, left: 0.0, rotation: 126 },
+        { top: 2.6, left: 2.6, rotation: 56 },
+        { top: 3.3, left: 5.6, rotation: 251 },
+        { top: 3.2, left: 9.5, rotation: 76 },
+        { top: 2.5, left: 12.5, rotation: 203 },
+        { top: 3.1, left: 15.4, rotation: 178 },
+        { top: 4.2, left: -1.1, rotation: 292 },
+        { top: 3.9, left: 1.2, rotation: 2 },
+        { top: 4.5, left: 3.5, rotation: 107 },
+        { top: 4.2, left: 7.8, rotation: 210 },
+        { top: 4.1, left: 11.5, rotation: 116 },
+        { top: 4.4, left: 14.1, rotation: 65 },
+    ];
+
+    return (
+        <>
+            {seeds.map((seed) => (
+                <SesameSeed key={seed.top} {...seed} />
+            ))}
+        </>
+    );
+};
 
 export const BunTop = styled.div`
     position: relative;
@@ -98,6 +133,12 @@ export const BunTop = styled.div`
 
     animation: ${getAnimation(5)} 4s ease-in-out 250ms infinite normal;
 `;
+
+export const BunTopWithSesameSeeds = () => (
+    <BunTop>
+        <SesameSeeds />
+    </BunTop>
+);
 
 /* eslint-disable */
 export const Lettuce = styled.div`
