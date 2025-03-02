@@ -1,6 +1,3 @@
-import clientPromise, { MONGO_DB } from '@/lib/mongodb';
-import { Recipe } from '@/types';
-import { Filter } from 'mongodb';
 import { Home } from './home/Home';
 
 export const metadata = {
@@ -16,39 +13,10 @@ export const metadata = {
     },
 };
 
-export default async function HomePage(props: {
+export default function HomePage(props: {
     searchParams: { [key: string]: string };
 }) {
-    const { search, page = '1' } = props.searchParams;
-    const ITEMS_PER_PAGE = 30;
-    const currentPage = parseInt(page);
+    const { search } = props.searchParams;
 
-    const find: Filter<Recipe> = {};
-
-    if (search && typeof search === 'string') {
-        find.name = { $regex: new RegExp(search.trim(), 'i') };
-    }
-
-    const client = await clientPromise;
-    const db = client.db(MONGO_DB);
-
-    const recipes = await db
-        .collection<Recipe>('recipes')
-        .find(find)
-        .skip((currentPage - 1) * ITEMS_PER_PAGE)
-        .limit(ITEMS_PER_PAGE)
-        .toArray();
-
-    const totalRecipes = await db
-        .collection<Recipe>('recipes')
-        .countDocuments(find);
-    const hasMore = totalRecipes > currentPage * ITEMS_PER_PAGE;
-
-    return (
-        <Home
-            initialRecipes={JSON.parse(JSON.stringify(recipes))}
-            hasMore={hasMore}
-            search={search}
-        />
-    );
+    return <Home search={search} />;
 }

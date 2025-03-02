@@ -7,32 +7,48 @@ import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 type HomeProps = {
-    initialRecipes: Recipe[];
-    hasMore: boolean;
     search?: string;
 };
 
 export function Home(props: HomeProps) {
-    const { initialRecipes, hasMore: initialHasMore, search } = props;
-    const [recipes, setRecipes] = useState(initialRecipes);
+    const { search } = props;
+    const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(initialHasMore);
-    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const { ref, inView } = useInView({
         threshold: 0,
     });
 
+    // Load initial recipes
+    useEffect(() => {
+        const loadInitial = async () => {
+            setLoading(true);
+            const { recipes: initialRecipes, hasMore: initialHasMore } =
+                await getMoreRecipes(1, search);
+            setRecipes(initialRecipes);
+            setHasMore(initialHasMore);
+            setPage(1);
+            setLoading(false);
+        };
+
+        loadInitial();
+    }, [search]);
+
+    // Load more recipes when scrolling
     useEffect(() => {
         const loadMore = async () => {
             if (inView && hasMore && !loading) {
                 setLoading(true);
                 const nextPage = page + 1;
-                const newRecipes = await getMoreRecipes(nextPage, search);
+                const { recipes: newRecipes, hasMore: moreAvailable } =
+                    await getMoreRecipes(nextPage, search);
 
                 if (newRecipes.length > 0) {
                     setRecipes((prev) => [...prev, ...newRecipes]);
                     setPage(nextPage);
+                    setHasMore(moreAvailable);
                 } else {
                     setHasMore(false);
                 }

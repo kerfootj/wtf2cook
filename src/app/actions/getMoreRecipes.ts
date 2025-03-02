@@ -4,8 +4,9 @@ import clientPromise, { MONGO_DB } from '@/lib/mongodb';
 import { Recipe } from '@/types';
 import { Filter } from 'mongodb';
 
+const ITEMS_PER_PAGE = 30;
+
 export async function getMoreRecipes(page: number, search?: string) {
-    const ITEMS_PER_PAGE = 12;
     const find: Filter<Recipe> = {};
 
     if (search) {
@@ -22,5 +23,11 @@ export async function getMoreRecipes(page: number, search?: string) {
         .limit(ITEMS_PER_PAGE)
         .toArray();
 
-    return JSON.parse(JSON.stringify(recipes));
+    // If we got fewer items than the page size, there are no more results
+    const hasMore = recipes.length === ITEMS_PER_PAGE;
+
+    return {
+        recipes: JSON.parse(JSON.stringify(recipes)),
+        hasMore,
+    };
 }
