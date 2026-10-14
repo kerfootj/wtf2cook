@@ -1,5 +1,5 @@
-import { LoadingBurger } from '@/components/atoms';
+import { BurgerLoader } from "@/components/burger-loader";
 
 export default function Loading() {
-    return <LoadingBurger />;
+  return <main className="page-shell loading-page"><BurgerLoader /></main>;
 }

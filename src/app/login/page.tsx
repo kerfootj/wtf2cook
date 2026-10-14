@@ -1,11 +1,6 @@
-import { LoginForm } from './LoginForm';
+import { googleConfigured } from "@/lib/auth";
+import { AuthButtons } from "@/components/auth-buttons";
 
-export const metadata = {
-    metadataBase: new URL('https://www.wtf2cook.ca'),
-    title: 'Login - WTF 2 Cook',
-    description: 'Login to wtf2cook.ca for the best no bs recipes.',
-};
-
-export default function Login() {
-    return <LoginForm />;
+export default function LoginPage() {
+  return <main className="page-shell login-shell"><div className="login-card"><span className="login-symbol">✳</span><p className="kicker">Your kitchen, your recipes</p><h1>Come on in.</h1><p>Sign in with Google to add recipes, edit your collection, and create agent API tokens.</p><AuthButtons signedIn={false} configured={googleConfigured} />{!googleConfigured && <p className="setup-note">Google OAuth credentials are missing in this environment.</p>}</div></main>;
 }
