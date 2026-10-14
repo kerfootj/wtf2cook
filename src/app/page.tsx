@@ -5,11 +5,13 @@ import { InfiniteRecipes } from "@/components/infinite-recipes";
 import { ActionIcon } from "@/components/action-icon";
 import { authOptions } from "@/lib/auth";
 import { getRandomRecipe, listRecipes } from "@/lib/recipes";
+import Loading from "./loading";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string; loading?: string }> }) {
   const params = await searchParams;
+  if (process.env.NODE_ENV === "development" && params.loading === "1") return <Loading />;
   const search = (params.q ?? "").slice(0, 80);
   let result: Awaited<ReturnType<typeof listRecipes>>;
   let featured: Awaited<ReturnType<typeof getRandomRecipe>> = null;

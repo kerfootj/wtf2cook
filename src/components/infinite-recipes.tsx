@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { BurgerLoader } from "@/components/burger-loader";
 import { RecipeCard } from "@/components/recipe-card";
 import type { Recipe } from "@/lib/recipes";
 
@@ -59,10 +61,10 @@ export function InfiniteRecipes({ initialRecipes, initialPages, search }: {
     <div className="recipe-grid">{recipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)}</div>
     {hasMore && <div className="recipe-list-end" ref={sentinel}>
       {error && <p role="alert">{error}</p>}
-      <button className="button" type="button" onClick={() => void loadMore()} disabled={loading}>
-        {loading ? "Loading recipes…" : error ? "Try again" : "Load more recipes"}
-      </button>
+      {loading
+        ? <BurgerLoader label="Loading more recipes" size={3} />
+        : <button className="button" type="button" onClick={() => void loadMore()}>{error ? "Try again" : "Load more recipes"}</button>}
     </div>}
-    {!hasMore && <p className="recipe-list-end" role="status">That’s the whole menu.</p>}
+    {!hasMore && <p className="recipe-list-end" role="status">That&apos;s f*cking it? <Link href="/recipes/new">Add your own recipe</Link></p>}
   </>;
 }

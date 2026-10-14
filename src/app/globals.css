@@ -98,9 +98,9 @@ body{background:radial-gradient(ellipse at 72% 0%,rgba(86,77,154,.24) 0%,transpa
 @media(max-width:430px){.detail-stats dt{font-size:.58rem;letter-spacing:.04em}.detail-stats dd strong{font-size:.94rem}}
 
 /* The original build-a-burger loader, recreated without Emotion. */
-.takeout-loader{display:grid;justify-items:center;gap:12px}
-.takeout-box{display:flex;flex-direction:column;align-items:center;justify-content:center;width:30em;height:30em;overflow:hidden;isolation:isolate}
-.takeout-piece{position:relative;flex:none;visibility:hidden;animation-duration:var(--takeout-duration,4s);animation-timing-function:ease-in-out;animation-delay:.25s;animation-iteration-count:infinite}
+.takeout-loader{display:grid;justify-items:center;gap:12px;width:100%}
+.takeout-box{display:flex;flex-direction:column;align-items:center;justify-content:center;width:min(70em,100%);height:38em;overflow:hidden;isolation:isolate}
+.takeout-piece{position:relative;flex:none;visibility:hidden;animation-duration:var(--takeout-duration,4s);animation-timing-function:ease-in-out;animation-delay:.25s;animation-iteration-count:infinite;will-change:transform,scale}
 .takeout-top{width:20em;height:6em;background:#fec36b;border-left:2em solid #f9a33c;border-radius:10em 10em .5em .5em;z-index:6;animation-name:takeout-top-drop}
 .takeout-seed{position:absolute;display:block;width:1em;height:1em;border-radius:0 50% 50% 50%;background:#f8ebca;visibility:hidden;animation:takeout-seed-drop-a var(--takeout-duration,4s) ease-in-out .25s infinite}
 .takeout-seed:nth-child(4n+2){animation-name:takeout-seed-drop-b}
@@ -114,16 +114,16 @@ body{background:radial-gradient(ellipse at 72% 0%,rgba(86,77,154,.24) 0%,transpa
 .takeout-cheese:after{width:1.1em;height:1.1em;top:.5em;left:4.4em}
 .takeout-patty{width:24em;height:3.8em;border-left:4.1em solid #2f1f17;border-radius:1.9em;background:linear-gradient(to bottom,#3d271c,#452c20);z-index:2;animation-name:takeout-patty-drop}
 .takeout-bottom{width:20em;height:4em;border-left:2.2em solid #f9a33c;border-bottom:.2em solid #ffe9cf;border-radius:.5em .5em 2.5em 2.5em;background:#fec36b;z-index:1;animation-name:takeout-bottom-drop}
-@keyframes takeout-bottom-drop{0%{visibility:hidden;transform:translateY(-20em)}10%,75%{visibility:visible;transform:translateY(0)}90%{visibility:visible;transform:translateY(20em)}100%{visibility:hidden;transform:translateY(20em)}}
-@keyframes takeout-patty-drop{0%,5%{visibility:hidden;transform:translateY(-20em)}15%,75%{visibility:visible;transform:translateY(0)}90%{visibility:visible;transform:translateY(20em)}100%{visibility:hidden;transform:translateY(20em)}}
-@keyframes takeout-cheese-drop{0%,10%{visibility:hidden;transform:translateY(-20em)}20%,75%{visibility:visible;transform:translateY(0)}90%{visibility:visible;transform:translateY(20em)}100%{visibility:hidden;transform:translateY(20em)}}
-@keyframes takeout-tomato-drop{0%,15%{visibility:hidden;transform:translateY(-20em)}25%,75%{visibility:visible;transform:translateY(0)}90%{visibility:visible;transform:translateY(20em)}100%{visibility:hidden;transform:translateY(20em)}}
-@keyframes takeout-lettuce-drop{0%,20%{visibility:hidden;transform:translateY(-20em)}30%,75%{visibility:visible;transform:translateY(0)}90%{visibility:visible;transform:translateY(20em)}100%{visibility:hidden;transform:translateY(20em)}}
-@keyframes takeout-top-drop{0%,25%{visibility:hidden;transform:translateY(-20em)}35%,75%{visibility:visible;transform:translateY(0)}90%{visibility:visible;transform:translateY(20em)}100%{visibility:hidden;transform:translateY(20em)}}
-@keyframes takeout-seed-drop-a{0%,35%{visibility:hidden;transform:translateY(-25em)}42%,75%{visibility:visible;transform:translateY(0)}75.1%,100%{visibility:hidden;transform:translateY(25em)}}
-@keyframes takeout-seed-drop-b{0%,37%{visibility:hidden;transform:translateY(-25em)}44%,75%{visibility:visible;transform:translateY(0)}75.1%,100%{visibility:hidden;transform:translateY(25em)}}
-@keyframes takeout-seed-drop-c{0%,39%{visibility:hidden;transform:translateY(-25em)}46%,75%{visibility:visible;transform:translateY(0)}75.1%,100%{visibility:hidden;transform:translateY(25em)}}
-@keyframes takeout-seed-drop-d{0%,41%{visibility:hidden;transform:translateY(-25em)}48%,75%{visibility:visible;transform:translateY(0)}75.1%,100%{visibility:hidden;transform:translateY(25em)}}
+@keyframes takeout-bottom-drop{0%{visibility:hidden;transform:translateY(-20em)}10%,75%{visibility:visible;transform:translateX(0);scale:1;animation-timing-function:cubic-bezier(.45,0,1,1)}82%{scale:1}87%{scale:1.12 .94}93%{visibility:visible;transform:translateX(60em);scale:1.12 .94}100%{visibility:hidden;transform:translateX(60em);scale:1}}
+@keyframes takeout-patty-drop{0%,5%{visibility:hidden;transform:translateY(-20em)}15%,76%{visibility:visible;transform:translateX(0);scale:1;animation-timing-function:cubic-bezier(.45,0,1,1)}83%{scale:1}88%{scale:1.12 .94}94%{visibility:visible;transform:translateX(60em);scale:1.12 .94}100%{visibility:hidden;transform:translateX(60em);scale:1}}
+@keyframes takeout-cheese-drop{0%,10%{visibility:hidden;transform:translateY(-20em)}20%,77%{visibility:visible;transform:translateX(0);scale:1;animation-timing-function:cubic-bezier(.45,0,1,1)}84%{scale:1}89%{scale:1.12 .94}95%{visibility:visible;transform:translateX(60em);scale:1.12 .94}100%{visibility:hidden;transform:translateX(60em);scale:1}}
+@keyframes takeout-tomato-drop{0%,15%{visibility:hidden;transform:translateY(-20em)}25%,78%{visibility:visible;transform:translateX(0);scale:1;animation-timing-function:cubic-bezier(.45,0,1,1)}85%{scale:1}90%{scale:1.12 .94}96%{visibility:visible;transform:translateX(60em);scale:1.12 .94}100%{visibility:hidden;transform:translateX(60em);scale:1}}
+@keyframes takeout-lettuce-drop{0%,20%{visibility:hidden;transform:translateY(-20em)}30%,79%{visibility:visible;transform:translateX(0);scale:1;animation-timing-function:cubic-bezier(.45,0,1,1)}86%{scale:1}91%{scale:1.12 .94}97%{visibility:visible;transform:translateX(60em);scale:1.12 .94}100%{visibility:hidden;transform:translateX(60em);scale:1}}
+@keyframes takeout-top-drop{0%,25%{visibility:hidden;transform:translateY(-20em)}35%,80%{visibility:visible;transform:translateX(0);scale:1;animation-timing-function:cubic-bezier(.45,0,1,1)}87%{scale:1}92%{scale:1.12 .94}98%{visibility:visible;transform:translateX(60em);scale:1.12 .94}100%{visibility:hidden;transform:translateX(60em);scale:1}}
+@keyframes takeout-seed-drop-a{0%,35%{visibility:hidden;translate:0 -24em}35.1%{visibility:visible;translate:0 -24em}53%,100%{visibility:visible;translate:0 0}}
+@keyframes takeout-seed-drop-b{0%,37%{visibility:hidden;translate:0 -24em}37.1%{visibility:visible;translate:0 -24em}55%,100%{visibility:visible;translate:0 0}}
+@keyframes takeout-seed-drop-c{0%,39%{visibility:hidden;translate:0 -24em}39.1%{visibility:visible;translate:0 -24em}57%,100%{visibility:visible;translate:0 0}}
+@keyframes takeout-seed-drop-d{0%,41%{visibility:hidden;translate:0 -24em}41.1%{visibility:visible;translate:0 -24em}59%,100%{visibility:visible;translate:0 0}}
 .recipe-card-featured{position:relative}
 .feature-loading-overlay{--takeout-duration:2.6s;position:absolute;inset:0;z-index:10;display:grid;place-items:center;background:rgba(13,16,32,.92);backdrop-filter:blur(8px)}
 @media(prefers-reduced-motion:reduce){.takeout-piece,.takeout-seed{animation:none!important;visibility:visible!important;transform:none!important}}
@@ -154,4 +154,12 @@ body{background:radial-gradient(ellipse at 72% 0%,rgba(86,77,154,.24) 0%,transpa
 .recipe-list-end{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;min-height:80px;margin:30px 0 0;color:var(--muted);font-size:.86rem;text-align:center}
 .recipe-list-end p{margin:0;color:#ffd2c9}
 .recipe-list-end .button{padding:10px 16px;font-size:.84rem}
+.recipe-list-end .takeout-loader{--takeout-duration:2.6s;gap:2px}
+.recipe-list-end>a{color:var(--accent-purple);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.recipe-list-end>a:hover{color:var(--accent-blue)}
+.detail-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}
+.detail-toolbar .back-link{margin-bottom:0}
+.browse-add,.detail-toolbar>.button{min-height:40px;padding:9px 14px;gap:8px;border-radius:11px;font-size:.86rem}
+.browse-add .button-icon,.detail-toolbar>.button .button-icon{width:16px;height:16px}
+@media(max-width:700px){.browse-add,.detail-toolbar>.button{min-height:38px;padding:8px 12px;font-size:.82rem}}
 @media(max-width:700px){.editor-heading .editor-actions{width:100%}.editor-action{min-height:38px;padding:8px 12px;font-size:.82rem}}

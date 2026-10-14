@@ -20,7 +20,10 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
   const totalMinutes = recipe.time_total || (recipe.time_prep ?? 0) + (recipe.time_cook ?? 0) + (recipe.time_chill ?? 0);
   return (
     <main className="page-shell detail-shell">
-      <Link className="back-link" href="/">← Back to recipes</Link>
+      <div className="detail-toolbar">
+        <Link className="back-link" href="/">← Back to recipes</Link>
+        {editable && <Link className="button button-primary" href={`/recipes/${recipe.id}/edit`}><ActionIcon kind="edit" />Edit recipe</Link>}
+      </div>
       <article className="detail-card">
         <div className="detail-hero">
           <div className="detail-intro"><h1>{recipe.name}</h1>{recipe.description && <p className="detail-description">{recipe.description}</p>}
@@ -31,7 +34,6 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
               {totalMinutes > 0 && <DurationStat label="Total" minutes={totalMinutes} total />}
               <div><dt>Serves</dt><dd><strong>{recipe.servings}</strong></dd></div>
             </dl>
-            {editable && <Link className="button button-primary" href={`/recipes/${recipe.id}/edit`}><ActionIcon kind="edit" />Edit recipe</Link>}
           </div>
           <div className="detail-image">{photo ? <img src={photo} alt={recipe.name} /> : <span className="image-placeholder">✳</span>}</div>
         </div>
