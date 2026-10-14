@@ -17,6 +17,15 @@ test("visitor can browse, search, and read a recipe", async ({ page }) => {
   await expect(page.locator(".site-header").getByRole("searchbox", { name: "Search recipes" })).toBeVisible();
   await expect(page.locator(".browse-section").getByRole("searchbox")).toHaveCount(0);
   await expect(page.locator(".recipe-grid .card-arrow")).toHaveCount(0);
+  await expect(page.locator(".pagination")).toHaveCount(0);
+  const icon = page.locator('link[rel="icon"]');
+  await expect(icon).toHaveAttribute("href", /icon\.svg/);
+  const iconResponse = await page.request.get(await icon.getAttribute("href") ?? "/icon.svg");
+  expect(iconResponse.ok()).toBe(true);
+  expect(await iconResponse.text()).toContain("<svg");
+  const nextPage = await page.request.get("/api/recipes?page=2");
+  expect(nextPage.ok()).toBe(true);
+  expect((await nextPage.json()).recipes).toBeInstanceOf(Array);
   const firstRecipe = page.locator(".recipe-grid .card-link").first();
   await expect(firstRecipe).toBeVisible();
   const recipeName = await firstRecipe.locator("h2").innerText();

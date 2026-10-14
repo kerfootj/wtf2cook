@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Recipe } from "@/lib/recipes";
-import { recipeUrl, safePhotoUrl } from "@/lib/recipes";
+import { recipeUrl, safePhotoUrl } from "@/lib/recipe-links";
 import { formatDuration } from "@/lib/duration";
 
 export function RecipeCard({ recipe }: { recipe: Recipe }) {

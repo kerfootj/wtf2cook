@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Recipe, RecipeInput } from "@/lib/recipes";
+import { recipeUrl } from "@/lib/recipe-links";
 import { ActionIcon } from "@/components/action-icon";
 
 type Group = { id: string; title: string | null; lines: string };
@@ -30,6 +32,7 @@ export function RecipeEditor({ recipe }: { recipe?: Recipe }) {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const cancelUrl = recipe ? recipeUrl(recipe) : "/";
 
   function updateGroup(groups: Group[], setGroups: (groups: Group[]) => void, index: number, patch: Partial<Group>) {
     setGroups(groups.map((group, current) => current === index ? { ...group, ...patch } : group));
@@ -77,7 +80,7 @@ export function RecipeEditor({ recipe }: { recipe?: Recipe }) {
 
   return (
     <form className="editor-card" onSubmit={save}>
-      <div className="editor-heading"><div><p className="kicker">Make it delicious</p><h1>{recipe ? "Edit recipe" : "New recipe"}</h1></div><button className="button button-primary" disabled={saving} type="submit"><ActionIcon kind="save" />{saving ? "Saving…" : "Save recipe"}</button></div>
+      <div className="editor-heading"><div><p className="kicker">Make it delicious</p><h1>{recipe ? "Edit recipe" : "New recipe"}</h1></div><div className="editor-actions"><Link className="button editor-action" href={cancelUrl}>Cancel</Link><button className="button button-primary editor-action" disabled={saving} type="submit"><ActionIcon kind="save" />{saving ? "Saving…" : "Save recipe"}</button></div></div>
       {error && <p className="form-error" role="alert">{error}</p>}
       <div className="field-grid">
         <label className="field full">Recipe name<input value={name} onChange={(event) => setName(event.target.value)} required minLength={2} maxLength={140} placeholder="The one everyone asks you to make" /></label>
@@ -92,7 +95,7 @@ export function RecipeEditor({ recipe }: { recipe?: Recipe }) {
       <EditorGroups title="Ingredients" hint="One ingredient per line" groups={ingredients} setGroups={setIngredients} updateGroup={updateGroup} />
       <EditorGroups title="Instructions" hint="One step per line" groups={instructions} setGroups={setInstructions} updateGroup={updateGroup} />
       <label className="field full">Notes<textarea value={notes} onChange={(event) => setNotes(event.target.value)} rows={4} maxLength={5000} placeholder="Tips, substitutions, or things to remember next time" /></label>
-      <div className="editor-footer"><button className="button button-primary" disabled={saving} type="submit"><ActionIcon kind="save" />{saving ? "Saving…" : "Save recipe"}</button></div>
+      <div className="editor-footer editor-actions"><Link className="button editor-action" href={cancelUrl}>Cancel</Link><button className="button button-primary editor-action" disabled={saving} type="submit"><ActionIcon kind="save" />{saving ? "Saving…" : "Save recipe"}</button></div>
     </form>
   );
 }
