@@ -46,6 +46,12 @@ test("featured recipe fits a laptop and is hidden on mobile", async ({ page }, t
     const snap = await page.locator("html").evaluate((node) => getComputedStyle(node).scrollSnapType);
     // Chromium serializes `y proximity` as `y` (proximity is the default).
     expect(snap).toMatch(/^y(?: proximity)?$/);
+    const card = page.locator(".recipe-grid .recipe-card").nth(2);
+    await card.evaluate((element) => element.scrollIntoView({ block: "start", behavior: "instant" }));
+    await expect.poll(async () => card.evaluate((element) => {
+      const headerBottom = document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0;
+      return Math.abs(element.getBoundingClientRect().top - headerBottom - 7);
+    })).toBeLessThanOrEqual(2);
   } else {
     await expect(featured).toBeVisible();
     const bounds = await featured.boundingBox();
@@ -68,4 +74,12 @@ test("featured recipe fits a laptop and is hidden on mobile", async ({ page }, t
     await expect(yes).not.toHaveAttribute("href", firstHref ?? "");
     await expect(featured.getByRole("button", { name: "F*ck No!" })).toBeEnabled();
   }
+});
+
+test("loading preview stays visible when requested", async ({ page }) => {
+  await page.goto("/?loading=1");
+  await expect(page.getByRole("status", { name: "Loading recipes" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /All recipes/ })).toHaveCount(0);
+  await page.waitForTimeout(4_500);
+  await expect(page.getByRole("status", { name: "Loading recipes" })).toBeVisible();
 });
