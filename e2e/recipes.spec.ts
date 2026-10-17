@@ -83,3 +83,17 @@ test("loading preview stays visible when requested", async ({ page }) => {
   await page.waitForTimeout(4_500);
   await expect(page.getByRole("status", { name: "Loading recipes" })).toBeVisible();
 });
+
+test("anonymous visitors cannot request an image upload token", async ({ request }) => {
+  const response = await request.post("/api/images", {
+    data: {
+      type: "blob.generate-client-token",
+      payload: {
+        pathname: "recipes/00000000-0000-4000-8000-000000000000.jpg",
+        multipart: false,
+        clientPayload: null,
+      },
+    },
+  });
+  expect(response.status()).toBe(401);
+});

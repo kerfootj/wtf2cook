@@ -43,7 +43,7 @@ export async function verifyToken(value: string): Promise<ApiToken | null> {
   return record.scopes.includes("recipes:create") ? record : null;
 }
 
-export async function applyRateLimit(tokenId: string): Promise<boolean> {
+export async function applyRateLimit(tokenId: string, maxRequests = 30): Promise<boolean> {
   const db = await getDb();
   const window = Math.floor(Date.now() / 60000);
   const collection = db.collection<{ token_id: string; window: number; count: number }>("api_rate_limits");
@@ -61,7 +61,7 @@ export async function applyRateLimit(tokenId: string): Promise<boolean> {
       { token_id: tokenId, window }, { $inc: { count: 1 } }, { returnDocument: "after" },
     );
   }
-  return (record?.count ?? 0) <= 30;
+  return (record?.count ?? 0) <= maxRequests;
 }
 
 export function idempotentRecipeId(tokenId: string, key: string): string {

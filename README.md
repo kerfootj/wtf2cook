@@ -6,7 +6,9 @@ This is the Next.js app served at [wtf2cook.ca](https://www.wtf2cook.ca). The pr
 
 Use Node 24 (`nvm use`), then `npm ci` in the repository root. Start MongoDB locally with Docker using a loopback-only `27017` port. Copy `.env.example` to ignored `.env.local` and configure `MONGODB_URI=mongodb://127.0.0.1:27017`, `MONGODB_DB=wtf2cook_dev`, `NEXTAUTH_URL=http://localhost:3000`, a random `NEXTAUTH_SECRET`, and a Google OAuth Web client ID/secret. Register **exactly** `http://localhost:3000/api/auth/callback/google` as an authorized redirect URI in Google Cloud. If 3000 is occupied, use the actual dev port in both `NEXTAUTH_URL` and the Google redirect URI.
 
-Run `npm run seed` to add six sample recipes without deleting existing records, then `npm run dev`. The seed script refuses non-local databases. `IMGUR_CLIENT_ID` is needed only for image uploads; HTTPS photo URLs work without it.
+Run `npm run seed` to add six sample recipes without deleting existing records, then `npm run dev`. The seed script refuses non-local databases. HTTPS photo URLs work without image-upload configuration.
+
+For photo uploads, create a **public** Vercel Blob store connected to this project. Include the Development environment if you want to upload locally, then add its `BLOB_READ_WRITE_TOKEN` to the existing `.env.local` without replacing the other local settings. Keep this token server-side. Only signed-in Google users can request a short-lived upload token (at most 10 per minute); the browser sends JPEG, PNG, or WebP files of up to 5 MB directly to Blob. Existing recipe photo URLs do not need to be migrated.
 
 ## Verification
 

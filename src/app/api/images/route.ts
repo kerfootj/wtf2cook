@@ -1,29 +1,47 @@
+import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-
-const types = new Set(["image/jpeg", "image/png", "image/webp"]);
+import { IMAGE_CONTENT_TYPES, IMAGE_MAX_BYTES, isRecipeImagePath } from "@/lib/image-upload";
+import { applyRateLimit } from "@/lib/tokens";
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id) return Response.json({ error: "Sign in required" }, { status: 401 });
-  const clientId = process.env.IMGUR_CLIENT_ID;
-  if (!clientId) return Response.json({ error: "Image upload is not configured" }, { status: 503 });
-  const data = await request.formData();
-  const file = data.get("image");
-  if (!(file instanceof File) || !types.has(file.type) || file.size === 0 || file.size > 5_000_000) {
-    return Response.json({ error: "Choose a JPEG, PNG or WebP image under 5 MB" }, { status: 400 });
-  }
-  const upload = new FormData();
-  upload.append("image", file, file.name);
+  let body: HandleUploadBody;
   try {
-    const response = await fetch("https://api.imgur.com/3/image", {
-      method: "POST", headers: { Authorization: `Client-ID ${clientId}` }, body: upload,
-    });
-    if (!response.ok) return Response.json({ error: "Image host rejected the upload" }, { status: 502 });
-    const result = await response.json() as { data?: { link?: string } };
-    if (!result.data?.link) return Response.json({ error: "Image host returned no URL" }, { status: 502 });
-    return Response.json({ url: result.data.link });
+    body = await request.json() as HandleUploadBody;
   } catch {
-    return Response.json({ error: "Image host is unavailable" }, { status: 502 });
+    return Response.json({ error: "Invalid upload request" }, { status: 400 });
+  }
+
+  // Blob completion callbacks have no browser session; only token requests need one.
+  const session = body?.type === "blob.generate-client-token"
+    ? await getServerSession(authOptions)
+    : null;
+  if (body?.type === "blob.generate-client-token" && !session?.user?.id) {
+    return Response.json({ error: "Sign in required" }, { status: 401 });
+  }
+  if (session?.user?.id && !await applyRateLimit(`image:${session.user.id}`, 10)) {
+    return Response.json({ error: "Too many image uploads. Try again in a minute." }, { status: 429 });
+  }
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return Response.json({ error: "Image upload is not configured" }, { status: 503 });
+  }
+
+  try {
+    const result = await handleUpload({
+      request,
+      body,
+      onBeforeGenerateToken: async (pathname) => {
+        if (!session?.user?.id) throw new Error("Sign in required");
+        if (!isRecipeImagePath(pathname)) throw new Error("Invalid image path");
+        return {
+          allowedContentTypes: [...IMAGE_CONTENT_TYPES],
+          maximumSizeInBytes: IMAGE_MAX_BYTES,
+          validUntil: Date.now() + 5 * 60 * 1000,
+        };
+      },
+    });
+    return Response.json(result);
+  } catch {
+    return Response.json({ error: "Could not authorize image upload" }, { status: 400 });
   }
 }
