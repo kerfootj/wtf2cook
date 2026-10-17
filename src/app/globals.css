@@ -87,6 +87,10 @@ body{background:radial-gradient(ellipse at 72% 0%,rgba(86,77,154,.24) 0%,transpa
 .button-icon{width:17px;height:17px;flex:none}
 .button-icon--edit,.button-icon--save{width:19px;height:19px}
 .recipe-grid .card-content h2{margin-top:0}
+.recipe-grid .card-link{display:flex;flex-direction:column}
+.recipe-grid .card-image{flex:none}
+.recipe-grid .card-content{display:flex;flex:1;flex-direction:column}
+.recipe-grid .card-meta{margin-top:auto}
 .detail-stats{display:flex;width:100%;margin:28px 0 32px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .detail-stats>div{flex:1 1 0;min-width:0;text-align:center;border-right:1px solid var(--line)}
 .detail-stats>div:last-child{border-right:0}
